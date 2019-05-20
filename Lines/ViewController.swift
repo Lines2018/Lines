@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     var game = Lines()
     var ballSelected:Ball?
     var score = 0 { didSet { scoreLabel.text = "\(score)" }}
+    lazy var choosenBall = ballViews[81]
     // MARK: Actions
     @IBAction func restartAction(_ sender: UIButton) {
         score = 0
@@ -51,7 +52,6 @@ class ViewController: UIViewController {
                 configureBallSelected(row: row, column: column)
             }
         }
-        configureGameField()
     }
     func dropLines(ball: Ball) -> Int {
         let lines = game.insert(new: ball)
@@ -66,6 +66,13 @@ class ViewController: UIViewController {
     }
     func configureBallSelected(row: Int, column: Int) {
         ballSelected = Ball(row: row, column: column, color: game.cells[row][column])
+        let ball = getBallView(row: row, column: column)
+        ball.isHidden = true
+        choosenBall.row = CGFloat(row - 1)
+        choosenBall.column = CGFloat(column - 1)
+        choosenBall.color = game.cells[row][column]
+        choosenBall.isHidden = false
+        startJumpAnimation()
         game.cells[row][column] = 0
         game.setWays(row: row, column: column)
     }
@@ -99,12 +106,27 @@ class ViewController: UIViewController {
         return ballViews[index]
     }
     override func viewDidLayoutSubviews() {
-        ballViews.forEach {$0.cellWidth = cellWidth}
+        if choosenBall.cellWidth != cellWidth {
+            ballViews.forEach {$0.cellWidth = cellWidth}
+            if ballSelected != nil {
+                startJumpAnimation()
+            }
+        }
+    }
+    @objc func appCameToForeground() {
+        if ballSelected != nil {
+            startJumpAnimation()
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         createBallViews()
         newGame()
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self,
+                                       selector: #selector(appCameToForeground),
+                                       name: UIApplication.willEnterForegroundNotification,
+                                       object: nil)
     }
     func dropNextBalls() {
         var c = 0
@@ -129,4 +151,13 @@ class ViewController: UIViewController {
         configureGameField()
     }
 }
-
+extension ViewController {
+    // MARK: Animations
+    func startJumpAnimation() {
+        choosenBall.cellWidth = cellWidth
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       options: [.repeat, .autoreverse, .curveEaseInOut],
+                       animations: { self.choosenBall.center.y -= 10 })
+    }
+}
