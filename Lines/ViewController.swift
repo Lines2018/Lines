@@ -14,11 +14,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var gameField: UIImageView!
     var ballViews = [BallView]()
+    var steps = [Ball]()
     var cellWidth: CGFloat { return gameField.bounds.height / 9 }
     var game = Lines()
     var ballSelected:Ball?
     var score = 0 { didSet { scoreLabel.text = "\(score)" }}
     lazy var choosenBall = ballViews[81]
+    var nextBallScale: CGFloat {
+        return showNext ? 0.5 : 0.1
+    }
+    var showNext = false
     // MARK: Actions
     @IBAction func restartAction(_ sender: UIButton) {
         score = 0
@@ -34,19 +39,18 @@ class ViewController: UIViewController {
             case 0:
                 stopJumpAnimation()
             case -1:
-                let view = getBallView(row: ball.row, column: ball.column)
-                view.isHidden = false
+                let ballView = getBallView(row: ball.row, column: ball.column)
+                ballView.isHidden = false
                 game.cells[ball.row][ball.column] = ball.color
                 configureBallSelected(row: row, column: column)
             case -2:
                 stopJumpAnimation()
             default:
-                let count = dropLines(ball: Ball(row: row, column: column, color: ball.color))
-                if count < 5 {
-                    dropNextBalls()
-                } else {
-                    score += 2 * count
-                }
+                let ballView = getBallView(row: row, column: column)
+                ballView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                ballView.isHidden = true
+                steps = game.getSteps(row: row, column: column)
+                stepAnimation()
             }
         } else {
             if game.cells[row][column] > 0 {
@@ -54,17 +58,7 @@ class ViewController: UIViewController {
             }
         }
     }
-    func dropLines(ball: Ball) -> Int {
-        let lines = game.insert(new: ball)
-        if lines.count > 4 {
-            for cell in lines {
-                game.cells[cell.row][cell.column] = 0
-            }
-        } else {
-            game.cells[lines[0].row][lines[0].column] = lines[0].color
-        }
-        return lines.count
-    }
+
     func configureBallSelected(row: Int, column: Int) {
         ballSelected = Ball(row: row, column: column, color: game.cells[row][column])
         let ball = getBallView(row: row, column: column)
@@ -175,5 +169,66 @@ extension ViewController {
                             self.ballSelected = nil
                         }
         })
+    }
+    func stepAnimation() {
+        if steps.count > 0 {
+            let ball = steps.remove(at: steps.count - 1)
+            UIView.animate(withDuration: 0.1,
+                           delay: 0,
+                           options: [.curveEaseInOut],
+                           animations: {
+                            self.choosenBall.row = CGFloat(ball.row - 1)
+                            self.choosenBall.column = CGFloat(ball.column - 1)
+            },
+                           completion: { finished in
+                            self.stepAnimation()
+            })
+        } else {
+            moveCompletion(row: Int(choosenBall.row + 1), column: Int(choosenBall.column + 1))
+        }
+    }
+    func dropLines(ball: Ball) -> Int {
+        let lines = game.insert(new: ball)
+        if lines.count > 4 {
+            for cell in lines {
+                let ball = getBallView(row: cell.row, column: cell.column)
+                UIView.animate(withDuration: 0.5,
+                               delay: 0,
+                               options: [],
+                               animations: { ball.alpha = 0 },
+                               completion: { finished in
+                                ball.isHidden = true
+                                ball.alpha = 1
+                                self.game.cells[cell.row][cell.column] = 0
+                                for next in self.game.nextBalls {
+                                    if (next.row == cell.row) && (next.column == cell.column) {
+                                        let nextView = self.getBallView(row: next.row, column: next.column)
+                                        nextView.color = next.color
+                                        nextView.isHidden = false
+                                        nextView.transform = CGAffineTransform(scaleX: self.nextBallScale, y: self.nextBallScale)
+                                    }
+                                }
+                })
+            }
+        } else {
+            game.cells[lines[0].row][lines[0].column] = lines[0].color
+            let ballView = getBallView(row: lines[0].row, column: lines[0].column)
+            ballView.transform = CGAffineTransform(scaleX: 1, y: 1)
+            ballView.isHidden = false
+            ballView.color = game.cells[lines[0].row][lines[0].column]
+        }
+        return lines.count
+    }
+    func moveCompletion(row: Int, column: Int) {
+        choosenBall.isHidden = true
+        let ball = getBallView(row: row, column: column)
+        ball.isHidden = false
+        ball.color = choosenBall.color
+        ballSelected = nil
+        let count = dropLines(ball: Ball(row: row, column: column, color: choosenBall.color))
+        if count < 5 {
+        } else {
+            score += 2 * count
+        }
     }
 }

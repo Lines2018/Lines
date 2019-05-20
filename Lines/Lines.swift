@@ -13,7 +13,7 @@ struct Ball {
     var color: Int
 }
 struct Lines {
-    var colorsInGame = 5
+    var colorsInGame = 1
     var ballsInGame = 10
     var nextBalls = [Ball]()
     var cells = Array(repeating: Array(repeating: -1, count:11), count: 11)
