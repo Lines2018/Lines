@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina3_5" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,17 +15,17 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Lines" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byW-TB-L3u">
-                                <rect key="frame" x="304" y="25" width="11" height="23"/>
+                                <rect key="frame" x="359" y="49" width="11" height="23"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="20"/>
                                 <color key="textColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="78g-wr-6g0">
-                                <rect key="frame" x="252" y="439" width="63" height="36"/>
+                                <rect key="frame" x="307" y="737" width="63" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Restart">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -35,7 +35,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOr-6U-Mfh">
-                                <rect key="frame" x="5" y="439" width="69" height="36"/>
+                                <rect key="frame" x="5" y="737" width="69" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Options">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -45,13 +45,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u3Y-Mo-JIv">
-                                <rect key="frame" x="5" y="25" width="34" height="23"/>
+                                <rect key="frame" x="5" y="49" width="34" height="23"/>
                                 <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="20"/>
                                 <color key="textColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GameField" translatesAutoresizingMaskIntoConstraints="NO" id="YbF-wc-UvC">
-                                <rect key="frame" x="0.0" y="120" width="320" height="320"/>
+                                <rect key="frame" x="0.0" y="363" width="375" height="375"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="YbF-wc-UvC" secondAttribute="height" multiplier="1:1" id="o5S-e4-Zm8"/>
@@ -60,59 +60,118 @@
                                     <outletCollection property="gestureRecognizers" destination="VxW-as-8y6" appends="YES" id="WhE-w5-NLJ"/>
                                 </connections>
                             </imageView>
+                            <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="FUT-39-ijN" customClass="PedestalView" customModule="Lines" customModuleProvider="target">
+                                <rect key="frame" x="80" y="81.666666666666657" width="93.666666666666686" height="281.33333333333337"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="score">
+                                        <integer key="value" value="0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="highScore">
+                                        <integer key="value" value="100"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view tag="1" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="982-BR-dNH" customClass="PedestalView" customModule="Lines" customModuleProvider="target">
+                                <rect key="frame" x="201.33333333333334" y="81.666666666666657" width="93.666666666666657" height="281.33333333333337"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="score">
+                                        <integer key="value" value="0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="highScore">
+                                        <integer key="value" value="100"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="FUT-39-ijN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="1pc-37-5lB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="982-BR-dNH" secondAttribute="trailing" constant="80" id="2ry-Ym-F6y"/>
+                            <constraint firstItem="982-BR-dNH" firstAttribute="height" relation="lessThanOrEqual" secondItem="YbF-wc-UvC" secondAttribute="height" multiplier="0.75" id="4oy-DR-QFs"/>
                             <constraint firstItem="YbF-wc-UvC" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="6yZ-RI-yTS"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="78g-wr-6g0" secondAttribute="bottom" constant="5" id="8NM-7O-Vx1"/>
+                            <constraint firstItem="982-BR-dNH" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Bdr-Av-xDy"/>
                             <constraint firstItem="78g-wr-6g0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LOr-6U-Mfh" secondAttribute="trailing" constant="8" symbolic="YES" id="Cao-84-rpT"/>
+                            <constraint firstItem="982-BR-dNH" firstAttribute="centerY" secondItem="YbF-wc-UvC" secondAttribute="centerY" id="DBQ-Cb-MWe"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="982-BR-dNH" secondAttribute="trailing" constant="40" id="GXR-fh-GiF"/>
                             <constraint firstItem="YbF-wc-UvC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="I0P-QU-sHC"/>
+                            <constraint firstItem="FUT-39-ijN" firstAttribute="height" secondItem="982-BR-dNH" secondAttribute="height" id="Igy-ez-Fe1"/>
                             <constraint firstItem="LOr-6U-Mfh" firstAttribute="centerY" secondItem="78g-wr-6g0" secondAttribute="centerY" id="JIw-Ng-nZL"/>
                             <constraint firstItem="u3Y-Mo-JIv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="OMb-KB-05h"/>
+                            <constraint firstItem="YbF-wc-UvC" firstAttribute="top" secondItem="982-BR-dNH" secondAttribute="bottom" id="OlI-kr-acJ"/>
                             <constraint firstItem="YbF-wc-UvC" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="Pyl-mv-qd2"/>
+                            <constraint firstItem="FUT-39-ijN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="RH0-R3-aIp"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="78g-wr-6g0" secondAttribute="trailing" constant="5" id="Tvi-PF-r5g"/>
+                            <constraint firstItem="982-BR-dNH" firstAttribute="centerY" secondItem="YbF-wc-UvC" secondAttribute="centerY" id="Wke-GD-7Pc"/>
                             <constraint firstItem="YbF-wc-UvC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="YCU-Z4-OU3"/>
                             <constraint firstItem="byW-TB-L3u" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="5" id="aNG-rn-BK4"/>
                             <constraint firstItem="YbF-wc-UvC" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="ak6-aU-pFC"/>
+                            <constraint firstItem="FUT-39-ijN" firstAttribute="width" secondItem="982-BR-dNH" secondAttribute="width" id="dgV-Uq-l86"/>
+                            <constraint firstItem="FUT-39-ijN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="80" id="fQL-I5-ewx"/>
+                            <constraint firstItem="982-BR-dNH" firstAttribute="width" secondItem="YbF-wc-UvC" secondAttribute="width" multiplier="0.25" id="kcV-ut-Uc1"/>
                             <constraint firstItem="byW-TB-L3u" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="u3Y-Mo-JIv" secondAttribute="trailing" constant="8" symbolic="YES" id="p19-q7-8cO"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="byW-TB-L3u" secondAttribute="trailing" constant="5" id="r6G-ki-zb7"/>
                             <constraint firstItem="LOr-6U-Mfh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="vWG-l3-Gor"/>
+                            <constraint firstItem="FUT-39-ijN" firstAttribute="centerY" secondItem="982-BR-dNH" secondAttribute="centerY" id="xXQ-hO-Ae6"/>
                             <constraint firstItem="YbF-wc-UvC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xkv-GA-IMM"/>
                             <constraint firstItem="u3Y-Mo-JIv" firstAttribute="centerY" secondItem="byW-TB-L3u" secondAttribute="centerY" id="xwq-Av-P7W"/>
+                            <constraint firstItem="982-BR-dNH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" priority="750" id="z0r-et-pjK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="YbF-wc-UvC" secondAttribute="bottom" constant="40" id="zJo-P0-lD7"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="2ry-Ym-F6y"/>
+                                <exclude reference="GXR-fh-GiF"/>
                                 <exclude reference="zJo-P0-lD7"/>
                                 <exclude reference="6yZ-RI-yTS"/>
                                 <exclude reference="I0P-QU-sHC"/>
+                                <exclude reference="OlI-kr-acJ"/>
                                 <exclude reference="Pyl-mv-qd2"/>
                                 <exclude reference="YCU-Z4-OU3"/>
                                 <exclude reference="ak6-aU-pFC"/>
+                                <exclude reference="1pc-37-5lB"/>
+                                <exclude reference="RH0-R3-aIp"/>
+                                <exclude reference="fQL-I5-ewx"/>
+                                <exclude reference="Bdr-Av-xDy"/>
+                                <exclude reference="DBQ-Cb-MWe"/>
+                                <exclude reference="Wke-GD-7Pc"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
                                 <include reference="I0P-QU-sHC"/>
                                 <include reference="ak6-aU-pFC"/>
+                                <include reference="1pc-37-5lB"/>
+                                <include reference="Bdr-Av-xDy"/>
+                                <include reference="Wke-GD-7Pc"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="constraints">
+                                <include reference="2ry-Ym-F6y"/>
                                 <include reference="zJo-P0-lD7"/>
+                                <include reference="OlI-kr-acJ"/>
                                 <include reference="YCU-Z4-OU3"/>
+                                <include reference="fQL-I5-ewx"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
+                                <include reference="GXR-fh-GiF"/>
                                 <include reference="6yZ-RI-yTS"/>
                                 <include reference="Pyl-mv-qd2"/>
+                                <include reference="RH0-R3-aIp"/>
+                                <include reference="DBQ-Cb-MWe"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
                         <outlet property="gameField" destination="YbF-wc-UvC" id="cJb-X0-Cfs"/>
+                        <outlet property="kingView" destination="FUT-39-ijN" id="O7B-Pv-reT"/>
+                        <outlet property="pretenderView" destination="982-BR-dNH" id="wVE-mO-Mdp"/>
                         <outlet property="scoreLabel" destination="byW-TB-L3u" id="MTe-tb-Pnj"/>
                     </connections>
                 </viewController>
@@ -123,7 +182,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="104" y="46"/>
+            <point key="canvasLocation" x="103.75" y="45"/>
         </scene>
     </scenes>
     <resources>

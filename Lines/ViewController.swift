@@ -13,6 +13,13 @@ class ViewController: UIViewController {
     // MARK: Properties
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var gameField: UIImageView!
+    @IBOutlet weak var pretenderView: PedestalView!
+    @IBOutlet weak var kingView: PedestalView!
+    var score = 0 { didSet {
+        scoreLabel.text = "\(score)"
+        kingView.score = score
+        pretenderView.score = score
+        }}
     var ballViews = [BallView]()
     var steps = [Ball]()
     var undoNext = [Ball]()
@@ -20,7 +27,7 @@ class ViewController: UIViewController {
     var cellWidth: CGFloat { return gameField.bounds.height / 9 }
     var game = Lines()
     var ballSelected:Ball?
-    var score = 0 { didSet { scoreLabel.text = "\(score)" }}
+    
     lazy var choosenBall = ballViews[81]
     var nextBallScale: CGFloat {
         return showNext ? 0.5 : 0.1
