@@ -32,6 +32,7 @@ class ViewController: UIViewController {
     // MARK: Actions
     @IBAction func restartAction(_ sender: UIButton) {
         score = 0
+        game.colorsInGame = game.colorsInGame == 7 ? 4 : game.colorsInGame + 1
         newGame()
     }
     @IBAction func tapGameField(_ sender: UITapGestureRecognizer) {
