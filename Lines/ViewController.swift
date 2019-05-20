@@ -30,15 +30,16 @@ class ViewController: UIViewController {
         let row = Int(point.y / cellWidth) + 1
         let column = Int(point.x / cellWidth) + 1
         if let ball = ballSelected {
-            ballSelected = nil
             switch game.ways[row][column] {
             case 0:
-                game.cells[ball.row][ball.column] = ball.color
+                stopJumpAnimation()
             case -1:
+                let view = getBallView(row: ball.row, column: ball.column)
+                view.isHidden = false
                 game.cells[ball.row][ball.column] = ball.color
                 configureBallSelected(row: row, column: column)
             case -2:
-                game.cells[ball.row][ball.column] = ball.color
+                stopJumpAnimation()
             default:
                 let count = dropLines(ball: Ball(row: row, column: column, color: ball.color))
                 if count < 5 {
@@ -159,5 +160,20 @@ extension ViewController {
                        delay: 0,
                        options: [.repeat, .autoreverse, .curveEaseInOut],
                        animations: { self.choosenBall.center.y -= 10 })
+    }
+    func stopJumpAnimation() {
+        UIView.animate(withDuration: 0.5,
+                       delay: 0,
+                       options: [.beginFromCurrentState],
+                       animations: { self.choosenBall.cellWidth = self.cellWidth },
+                       completion: {finished in
+                        self.choosenBall.isHidden = true
+                        if let cell = self.ballSelected {
+                            let ball = self.getBallView(row: cell.row, column: cell.column)
+                            ball.isHidden = false
+                            self.game.cells[cell.row][cell.column] = cell.color
+                            self.ballSelected = nil
+                        }
+        })
     }
 }
