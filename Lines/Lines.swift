@@ -13,11 +13,12 @@ struct Ball {
     var color: Int
 }
 struct Lines {
-    var colorsInGame = 1
+    var colorsInGame = 5
     var ballsInGame = 10
     var nextBalls = [Ball]()
     var cells = Array(repeating: Array(repeating: -1, count:11), count: 11)
     var ways = Array(repeating: Array(repeating: -1, count:11), count: 11)
+    lazy var undo = cells
     mutating func newGame() {
         for i in 1...9 {
             for j in 1...9 {

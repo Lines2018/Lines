@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var gameField: UIImageView!
     var ballViews = [BallView]()
     var steps = [Ball]()
+    var undoNext = [Ball]()
+    override var canBecomeFirstResponder: Bool { get { return true } }
     var cellWidth: CGFloat { return gameField.bounds.height / 9 }
     var game = Lines()
     var ballSelected:Ball?
@@ -23,7 +25,10 @@ class ViewController: UIViewController {
     var nextBallScale: CGFloat {
         return showNext ? 0.5 : 0.1
     }
-    var showNext = false
+    var showNext = true {
+        didSet { nextViews.forEach { $0.transform = CGAffineTransform(scaleX: nextBallScale, y: nextBallScale)}}
+    }
+    var nextViews = [BallView]()
     // MARK: Actions
     @IBAction func restartAction(_ sender: UIButton) {
         score = 0
@@ -55,6 +60,8 @@ class ViewController: UIViewController {
         } else {
             if game.cells[row][column] > 0 {
                 configureBallSelected(row: row, column: column)
+            } else {
+                showNext.toggle()
             }
         }
     }
@@ -68,6 +75,8 @@ class ViewController: UIViewController {
         choosenBall.color = game.cells[row][column]
         choosenBall.isHidden = false
         startJumpAnimation()
+        game.undo = game.cells
+        undoNext = game.nextBalls
         game.cells[row][column] = 0
         game.setWays(row: row, column: column)
     }
@@ -102,7 +111,13 @@ class ViewController: UIViewController {
     }
     override func viewDidLayoutSubviews() {
         if choosenBall.cellWidth != cellWidth {
+            for ball in nextViews {
+                ball.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }
             ballViews.forEach {$0.cellWidth = cellWidth}
+            for ball in nextViews {
+                ball.transform = CGAffineTransform(scaleX: nextBallScale, y: nextBallScale)
+            }
             if ballSelected != nil {
                 startJumpAnimation()
             }
@@ -117,11 +132,27 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         createBallViews()
         newGame()
+        self.becomeFirstResponder()
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self,
                                        selector: #selector(appCameToForeground),
                                        name: UIApplication.willEnterForegroundNotification,
                                        object: nil)
+    }
+    
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            if undoNext.count > 0 {
+                if ballSelected != nil {
+                    stopJumpAnimation()
+                }
+                game.cells = game.undo
+                game.nextBalls = undoNext
+                undoNext = []
+                configureGameField()
+                configureNextBalls()
+            }
+        }
     }
     func dropNextBalls() {
         var c = 0
@@ -140,10 +171,31 @@ class ViewController: UIViewController {
         game.setNextBalls(count: 3)
     }
     func newGame() {
+        if ballSelected != nil {
+            stopJumpAnimation()
+        }
+        if nextViews.count > 0 {
+            for ball in nextViews {
+                ball.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }
+            nextViews = []
+        }
         game.newGame()
         game.setNextBalls(count: game.ballsInGame)
         dropNextBalls()
         configureGameField()
+        configureNextBalls()
+    }
+    func configureNextBalls() {
+        for next in game.nextBalls {
+            let ball = getBallView(row: next.row, column: next.column)
+            if ball.isHidden {
+                ball.transform = CGAffineTransform(scaleX: nextBallScale, y: nextBallScale)
+                ball.isHidden = false
+                ball.color = next.color
+                nextViews.append(ball)
+            }
+        }
     }
 }
 extension ViewController {
@@ -227,8 +279,28 @@ extension ViewController {
         ballSelected = nil
         let count = dropLines(ball: Ball(row: row, column: column, color: choosenBall.color))
         if count < 5 {
+            self.appearanceAnimation()
         } else {
             score += 2 * count
+        }
+    }
+    func appearanceAnimation(){
+        for (index, ball) in self.nextViews.enumerated() {
+            let delay = Double(index) * 0.2
+            UIView.animate(withDuration: 0.6,
+                           delay: delay,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0,
+                           options: .curveEaseInOut,
+                           animations: { ball.transform = CGAffineTransform(scaleX: 1, y: 1) },
+                           completion: {finished in
+                            if index == self.nextViews.count - 1 {
+                                self.dropNextBalls()
+                                self.nextViews = []
+                                self.configureNextBalls()
+                            }
+                            
+            })
         }
     }
 }
